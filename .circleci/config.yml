@@ -1,0 +1,196 @@
+# CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+
+version: 2
+
+.working-directory: &working_directory
+  working_directory: ~/repo
+
+.docker: &docker
+  docker:
+    - image: circleci/node:8
+
+.restore-cache: &restore_cache
+  restore_cache:
+    name: Restoring Node Modules Cache
+    keys:
+      - v1-node_modules-{{ checksum "yarn.lock" }}
+      # fallback to using the latest cache if no exact match is found
+      - v1-node_modules-
+
+.setup-junit-environment: &setup_junit_environment
+  run:
+    name: Setting up JUnit Environment
+    command: |
+      echo "CIRCLE_TEST_REPORTS=${CIRCLE_TEST_REPORTS:-/tmp/circle-test-reports}" >> "${BASH_ENV}"
+      echo "TEST_REPORT_FILENAME=${TEST_REPORT_FILENAME:-junit.xml}" >> "${BASH_ENV}"
+      source "${BASH_ENV}"
+      echo "TEST_REPORT_PATH=${CIRCLE_TEST_REPORTS}/${CIRCLE_JOB}" >> "${BASH_ENV}"
+      source "${BASH_ENV}"
+      echo "TEST_REPORT_FILEPATH=${TEST_REPORT_PATH}/${TEST_REPORT_FILENAME}" >> "${BASH_ENV}"
+      source "${BASH_ENV}"
+      mkdir -p "${TEST_REPORT_PATH}"
+    when: always
+
+.junit-store-test-results: &junit_store_test_results
+  store_test_results:
+    path: /tmp/circle-test-reports
+
+jobs:
+  dependencies:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - run:
+          name: Node version
+          command: |
+            node --version
+            yarn --version
+      - <<: *restore_cache
+      - run:
+          name: Installing Dependencies
+          command: yarn install
+      - save_cache:
+          name: Saving Node Modules Cache
+          paths:
+            - node_modules
+          key: v1-node_modules-{{ checksum "yarn.lock" }}
+
+  lint:format:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: lint:format
+          command: yarn lint:format
+
+  lint:commit:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: lint:commit
+          command: yarn lint:commit
+
+  build:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: Building
+          command: yarn build
+
+  lint:ts:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - <<: *setup_junit_environment
+      - run:
+          name: Linting
+          command: yarn lint:ts
+      - run:
+          name: JUnit Output
+          environment:
+            JUNIT_FORMATTER: node_modules/tslint-junit-formatter/formatters
+          command: |
+            yarn lint:ts --formatters-dir "${JUNIT_FORMATTER}" --format junit --out "${TEST_REPORT_FILEPATH}" --force
+          when: always
+      - <<: *junit_store_test_results
+
+  docs:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: Documentation
+          command: yarn docs
+      - store_artifacts:
+          path: dist/docs
+          destination: documentation
+
+  test:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - <<: *setup_junit_environment
+      - run:
+          name: Tests
+          command: yarn test --ci
+      - run:
+          name: JUnit Output
+          environment:
+            JUNIT_REPORTER: ./node_modules/jest-junit-reporter
+          command: yarn test --ci --silent "--testResultsProcessor=${JUNIT_REPORTER}"
+          when: always
+      - <<: *junit_store_test_results
+
+  coverage:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: Coverage
+          command: yarn coverage
+      - run:
+          name: Upload
+          command: yarn codecov
+
+  release:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: Release
+          command: npx semantic-release
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - dependencies
+      - lint:ts:
+          requires:
+            - dependencies
+      - lint:format:
+          requires:
+            - dependencies
+      - lint:commit:
+          requires:
+            - dependencies
+      - docs:
+          requires:
+            - lint:ts
+      - build:
+          requires:
+            - lint:ts
+      - test:
+          requires:
+            - build
+      - coverage:
+          requires:
+            - test
+      - release:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master

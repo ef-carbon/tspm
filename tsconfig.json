@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "module": "ES2015",
+    "target": "ES2017",
+    "moduleResolution": "node",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@lib/*": ["lib/*"]
+    },
+    "newLine": "LF",
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext.asynciterable"
+    ]
+  },
+  "include": [
+    "bin/**/*",
+    "lib/**/*"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+    "node_modules"
+  ],
+  "typedocOptions": {
+    "name": "EF TypeScript Path Mapper",
+    "out": "dist/docs",
+    "readme": "docs/README.md",
+    "hideGenerator": true,
+    "excludeNotExported": true,
+    "excludePrivate": true,
+    "logger": "none",
+    "exclude": "**/*.test.ts"
+  }
+}
