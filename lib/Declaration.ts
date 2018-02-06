@@ -57,7 +57,9 @@ function isBuiltinModule(module: string): boolean {
   return builtin.indexOf(module) !== -1;
 }
 
-export default abstract class Export<T extends (ExportAllDeclaration | ExportNamedDeclaration) | ImportDeclaration> {
+export type Base = (ExportAllDeclaration | ExportNamedDeclaration) | ImportDeclaration;
+
+export default abstract class Export<T extends Base> {
   protected readonly declaration: T;
   readonly file: File;
   private processed: boolean = false;
