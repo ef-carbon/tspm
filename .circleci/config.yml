@@ -31,11 +31,16 @@ version: 2
       echo "TEST_REPORT_FILEPATH=${TEST_REPORT_PATH}/${TEST_REPORT_FILENAME}" >> "${BASH_ENV}"
       source "${BASH_ENV}"
       mkdir -p "${TEST_REPORT_PATH}"
-    when: always
 
 .junit-store-test-results: &junit_store_test_results
   store_test_results:
     path: /tmp/circle-test-reports
+
+.setup-yarn-global: &setup_yarn_global
+  run:
+    name: Setting up Yarn Global Environment
+    command: |
+      echo "PATH=${PATH}:$(yarn global bin)" >> "${BASH_ENV}"
 
 jobs:
   dependencies:
@@ -50,8 +55,15 @@ jobs:
             yarn --version
       - <<: *restore_cache
       - run:
+          name: Adding Greenkeeper Lockfile Dependency
+          command: yarn global add greenkeeper-lockfile@1
+      - <<: *setup_yarn_global
+      - run:
           name: Installing Dependencies
           command: yarn install
+      - run:
+          name: Updating Greenkeeper Lock File
+          command: greenkeeper-lockfile-update
       - save_cache:
           name: Saving Node Modules Cache
           paths:
@@ -137,6 +149,13 @@ jobs:
           command: yarn test --ci --silent "--testResultsProcessor=${JUNIT_REPORTER}"
           when: always
       - <<: *junit_store_test_results
+      - run:
+          name: Adding Greenkeeper Lockfile Dependency
+          command: yarn global add greenkeeper-lockfile@1
+      - <<: *setup_yarn_global
+      - run:
+          name: Uploading Greenkeeper Lock File
+          command: greenkeeper-lockfile-upload
 
   coverage:
     <<: *working_directory
