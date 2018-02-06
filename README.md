@@ -1,4 +1,4 @@
-# EF Document Object Model
+# EF TypeScript Path Mapper
 
 [![CircleCI][circleci-badge]][circleci]
 [![Code Coverage][codecov-badge]][codecov]
