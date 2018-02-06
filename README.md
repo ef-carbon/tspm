@@ -49,10 +49,17 @@ yarn add @ef-carbon/tspm
 ### Library
 
 ```
-import { Mapper } from '@ef-carbon/tspm'
-const mapper = new Mapper({ tsconfig: './tsonfig.json' });
-for await (const file in mapper.map()) {
-  console.log(`Converted '${file.name}'`);
+import convert, { IOptions, File } from '@ef-carbon/tspm'
+
+const options: IOptions = {
+  tsconfig: './tsconfig.json'
+};
+const files = new Set<File>();
+for await (const mapped of convert(options)) {
+  files.add(mapped.file);
+}
+for (const file of files) {
+  await file.write();
 }
 ```
 
