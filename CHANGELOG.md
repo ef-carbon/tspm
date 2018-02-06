@@ -1,3 +1,11 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/ef-carbon/tspm/compare/v1.1.0...v1.2.0) (2018-02-06)
+
+
+### Features
+
+* **export:** expose `File` and `IFileOptions` ([0b8357f](https://github.com/ef-carbon/tspm/commit/0b8357f))
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/ef-carbon/tspm/compare/v1.0.0...v1.1.0) (2018-02-06)
 
