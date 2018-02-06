@@ -50,7 +50,7 @@ export default class Mapper {
 
   async *files(): AsyncIterableIterator<File> {
     const { options } = this.parsed;
-    yield* this.parsed.fileNames.map(path => new File({ path, options }));
+    yield* this.parsed.fileNames.map(path => new File({ path, options, config: this.parsed }));
   }
 
   async *map(): AsyncIterableIterator<Import | Export> {

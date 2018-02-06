@@ -17,15 +17,35 @@ const writeFile = promisify(fs.writeFile);
 export interface IOptions {
   path: string | Path;
   options: ts.CompilerOptions;
+  config: ts.ParsedCommandLine;
+}
+
+function commonPathPrefix(paths: IterableIterator<string>): string {
+  const { done, value: left } = paths.next();
+  if (done) {
+    return '';
+  }
+  let index = left.length;
+  for (const right of paths) {
+    for (let i = 0; i < index; ++i) {
+      if (left.charAt(i) !== right.charAt(i)) {
+        index = i;
+        break;
+      }
+    }
+  }
+  return left.substring(0, index);
 }
 
 export default class File {
   readonly source: Path;
+  readonly root: Path;
   readonly options: ts.CompilerOptions;
   private program: estree.Program | undefined;
 
-  constructor({ path, options }: IOptions) {
+  constructor({ path, options, config: { fileNames } }: IOptions) {
     this.source = new Path(path.toString());
+    this.root = new Path(commonPathPrefix(fileNames[Symbol.iterator]()));
     this.options = options;
   }
 
@@ -94,14 +114,14 @@ export default class File {
   }
 
   get destination(): Path {
-    const { outDir, rootDir } = this.options;
+    const { outDir } = this.options;
 
     if (!outDir) {
       throw new TypeError(`Only 'outDir' is supported`);
     }
 
     const out = new Path(outDir);
-    const destination = out.join(this.source.relative(rootDir));
+    const destination = out.join(this.source.relative(this.root));
     destination.extension = '.js';
     return destination;
   }
