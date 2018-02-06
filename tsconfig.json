@@ -41,7 +41,6 @@
     "out": "dist/docs",
     "readme": "docs/README.md",
     "hideGenerator": true,
-    "excludeNotExported": true,
     "excludePrivate": true,
     "logger": "none",
     "exclude": "**/*.test.ts"
