@@ -5,4 +5,4 @@ import Declaration, { IOptions as IDeclarationOptions } from '@lib/Declaration';
 
 export type IOptions = IDeclarationOptions<ImportDeclaration>;
 
-export default class Export extends Declaration<ImportDeclaration> {}
+export default class Import extends Declaration<ImportDeclaration> {}
