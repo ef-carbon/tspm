@@ -5,6 +5,7 @@ import * as yargs from 'yargs';
 import convert from '@lib/convert';
 import TspmError from '@lib/Error';
 import ParseError from '@lib/error/Parse';
+import File from '@lib/File';
 
 interface IColours {
   [name: string]: string;
@@ -82,15 +83,24 @@ function colours(colour: true | 'auto' | false, stream: NodeJS.WriteStream): ICo
 }
 
 export async function map(options: IOptions): Promise<number> {
-  const { projectRoot: root, colour, silent } = options;
+  const { projectRoot: root, colour, silent, verbose } = options;
 
   try {
     const {blue: r, yellow: p, green: t, reset: _} = colours(colour, process.stderr);
+    const files = new Set<File>();
     for await (const mapped of convert(options)) {
-      if (!silent) {
+      if (!silent && verbose) {
         const { original, path, module } = mapped;
         const relative = module.relative(root);
         process.stdout.write(`${t}Mapped${_} '${r}${relative}${_}': '${p}${original}${_}' → '${p}${path}${_}'\n`);
+      }
+      files.add(mapped.file);
+    }
+    for (const file of files) {
+      await file.write();
+      if (!silent) {
+        const relative = file.destination.relative(root);
+        process.stdout.write(`${t}Wrote${_} '${r}${relative}${_}'\n`);
       }
     }
     return 0;
