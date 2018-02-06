@@ -1,6 +1,6 @@
 {
   "name": "@ef-carbon/tspm",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple TypeScript document object model",
   "main": "dist/lib/index.cjs.js",
   "module": "dist/lib/index.js",
