@@ -25,7 +25,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@lib": ["lib"]
+      "@lib/*": ["lib/*"]
     }
   }
 }
