@@ -1,5 +1,7 @@
 # EF TypeScript Path Mapper
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ef-carbon/tspm.svg)](https://greenkeeper.io/)
+
 [![CircleCI][circleci-badge]][circleci]
 [![Code Coverage][codecov-badge]][codecov]
 [![NPM Version][npm-version-badge]][npm]
