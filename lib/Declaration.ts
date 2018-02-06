@@ -59,7 +59,7 @@ function isBuiltinModule(module: string): boolean {
 
 export default abstract class Export<T extends (ExportAllDeclaration | ExportNamedDeclaration) | ImportDeclaration> {
   protected readonly declaration: T;
-  private readonly file: File;
+  readonly file: File;
   private processed: boolean = false;
   readonly original: string;
 
