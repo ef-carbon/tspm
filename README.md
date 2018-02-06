@@ -13,7 +13,7 @@
 [![Semantic Release][semantic-release-badge]][semantic-release]
 [![Commitizen friendly][commitizen-badge]][commitizen]
 [![Conventional Commits][coventional-commits-badge]][coventional-commits]
-[![GitHub Commits Since Last Release][github]][github-commits-badge]
+[![GitHub Commits Since Last Release][github-commits-badge]][github]
 
 > A binary that converts TypeScript path mappings in the compiled output
 
