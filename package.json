@@ -20,7 +20,7 @@
     "distclean": "git clean -Xfd",
     "clean": "git clean -Xfde node_modules",
     "build": "yarn -s build:ts",
-    "postbuild": "yarn -s build:rollup",
+    "postbuild": "yarn -s build:rollup && dist/bin/tspm",
     "build:ts": "tsc",
     "build:rollup": "yarn -s build:rollup:binary && yarn -s build:rollup:library",
     "build:rollup:binary": "rollup -c rollup.binary.config.js",
