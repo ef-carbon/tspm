@@ -1,9 +1,8 @@
 # EF TypeScript Path Mapper
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ef-carbon/tspm.svg)](https://greenkeeper.io/)
-
 [![CircleCI][circleci-badge]][circleci]
 [![Code Coverage][codecov-badge]][codecov]
+[![Greenkeeper][greenkeeper-badge]][greenkeeper]
 [![NPM Version][npm-version-badge]][npm]
 [![License][license-badge]][license]
 [![NPM Weekly Downloads][npm-downloads-week-badge]][npm]
@@ -133,6 +132,9 @@ There are various scripts available that provide the workflow steps for the proj
 
 [![Code Coverage Graph][codecov-graph]][codecov]
 
+
+[greenkeeper]: https://greenkeeper.io/)
+[greenkeeper-badge]: https://badges.greenkeeper.io/ef-carbon/tspm.svg
 [docs]: docs/README.md
 [yarn]: https://yarnpkg.com
 [npm]: https://www.npmjs.com/package/@ef-carbon/tspm
