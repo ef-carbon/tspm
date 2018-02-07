@@ -1,3 +1,25 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/ef-carbon/tspm/compare/v1.2.0...v2.0.0) (2018-02-07)
+
+
+### Code Refactoring
+
+* make mapping classes generic ([3e3df9d](https://github.com/ef-carbon/tspm/commit/3e3df9d)), closes [#2](https://github.com/ef-carbon/tspm/issues/2)
+
+
+### Features
+
+* implement TypeScript declaration mapping ([3392752](https://github.com/ef-carbon/tspm/commit/3392752)), closes [#2](https://github.com/ef-carbon/tspm/issues/2)
+
+
+### BREAKING CHANGES
+
+* The re-mapping classes have been made generic and there are ES derived variants of
+each. This is required so that we can nicely re-map TypeScript declaration files using the same
+re-mapping framework. The demo library code in the `README` will still work, however, the modules
+have all moved around hence the breaking change :boom: If you do not do any module loading of the
+library, then you will require no code changes other than upgrading your dependency
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/ef-carbon/tspm/compare/v1.1.0...v1.2.0) (2018-02-06)
 
