@@ -19,7 +19,9 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@es/*": ["lib/es/*"],
+      "@error/*": ["lib/error/*"]
     },
     "newLine": "LF",
     "lib": [

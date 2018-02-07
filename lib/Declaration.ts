@@ -1,17 +1,26 @@
-// tslint:disable-next-line:no-implicit-dependencies
-import { ExportAllDeclaration, ExportNamedDeclaration,  ImportDeclaration, SimpleLiteral } from 'estree';
 import * as fs from 'fs';
 import { basename, dirname, join, relative } from 'path';
 import * as ts from 'typescript';
 
-import ResolutionError from '@lib/error/Resolution';
-import File from '@lib/File';
+import ResolutionError from '@error/Resolution';
+import { DeclarationInterface as Interface, File } from '@lib/convert';
 import Path from '@lib/Path';
 
-export interface IOptions<T> {
+export interface IOptionsDeclaration<T extends Interface> {
   declaration: T;
+}
+
+export interface IOptionsFile {
   file: File;
 }
+
+export interface IOptionsPath {
+  path: string;
+}
+
+export type IDerivedOptions<T extends Interface> = IOptionsDeclaration<T> & IOptionsFile;
+
+export type IOptions<T extends Interface> = IDerivedOptions<T> & IOptionsPath;
 
 function isBuiltinModule(module: string): boolean {
   // TODO: change to use 'is-builtin-module', need to submit @types/is-builtin-module
@@ -57,28 +66,16 @@ function isBuiltinModule(module: string): boolean {
   return builtin.indexOf(module) !== -1;
 }
 
-export type Base = (ExportAllDeclaration | ExportNamedDeclaration) | ImportDeclaration;
-
-export default abstract class Declaration<T extends Base> {
+export default abstract class Declaration<T extends Interface> {
   protected readonly declaration: T;
   readonly file: File;
   private processed: boolean = false;
   readonly original: string;
 
-  constructor(options: IOptions<T>) {
-    this.declaration = options.declaration;
-    this.file = options.file;
-
-    // RAII checks
-    const { type, value } = this.literal;
-    if (type !== 'Literal') {
-      throw new TypeError(`Invalid export declaration source type: ${type}`);
-    }
-    if (typeof value !== 'string') {
-      throw new TypeError(`The type of the export source value was not a 'string': ${typeof value}`);
-    }
-
-    this.original = this.path;
+  constructor({ file, declaration, path }: IOptions<T>) {
+    this.declaration = declaration;
+    this.file = file;
+    this.original = path;
   }
 
   get isMapped(): Promise<boolean> {
@@ -89,20 +86,9 @@ export default abstract class Declaration<T extends Base> {
     return this.file.destination;
   }
 
-  get literal(): SimpleLiteral {
-    return (this.declaration.source as SimpleLiteral);
-  }
+  abstract get path(): string;
 
-  get path(): string {
-    return this.literal.value as string;
-  }
-
-  private update(value: string): void {
-    if (this.literal.raw) {
-      this.literal.raw = this.literal.raw.replace(this.path, value);
-    }
-    this.literal.value = value;
-  }
+  protected abstract update(value: string): void;
 
   toString(): string {
     return `${this.module}: ${this.path}`;

@@ -1,12 +1,15 @@
+import { File } from '@lib/convert';
 import TspmError from '@lib/Error';
-import File from '@lib/File';
 
 export interface IOptions {
   file: File;
   data: string;
   error: Error;
   range?: number;
+  regex?: RegExp;
 }
+
+const regex = /(.+) \(([0-9]+):([0-9]+)\)/;
 
 export default class ParseError extends TspmError {
   readonly file: File;
@@ -18,7 +21,7 @@ export default class ParseError extends TspmError {
   readonly target: string;
   readonly after: string;
 
-  constructor({ file, data, error, range }: IOptions) {
+  constructor({ file, data, error, range, regex: re }: IOptions) {
     const buffer = range || 5;
     let { message } = error;
     let line = 0;
@@ -27,8 +30,8 @@ export default class ParseError extends TspmError {
     let target = 'unknown';
     let after = '>';
 
-    // acorn specific parsing, to get line and column
-    const matches = /(.+) \(([0-9]+):([0-9]+)\)/.exec(message);
+    // Attempt to parse syntax error locations
+    const matches = (re || regex).exec(message);
     if (matches) {
       message = matches[1];
       line = parseInt(matches[2], 10);
