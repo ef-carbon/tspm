@@ -1,3 +1,11 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/ef-carbon/tspm/compare/v2.0.1...v2.0.2) (2018-02-07)
+
+
+### Bug Fixes
+
+* **tspm:** warn on unsupported compiler output ([37622d3](https://github.com/ef-carbon/tspm/commit/37622d3))
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/ef-carbon/tspm/compare/v2.0.0...v2.0.1) (2018-02-07)
 
