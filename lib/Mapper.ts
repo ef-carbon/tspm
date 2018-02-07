@@ -1,6 +1,9 @@
 import EsExport from '@es/Export';
 import EsFile from '@es/File';
 import EsImport from '@es/Import';
+import TsExport from '@ts/Export';
+import TsFile from '@ts/File';
+import TsImport from '@ts/Import';
 import { existsSync as fileExistsSync, readFileSync as fileReadSync } from 'fs';
 import { dirname, resolve } from 'path';
 import * as ts from 'typescript';
@@ -48,12 +51,15 @@ export default class Mapper {
     this.parsed = parsed;
   }
 
-  async *files(): AsyncIterableIterator<EsFile> {
+  async *files(): AsyncIterableIterator<EsFile | TsFile> {
     const { options } = this.parsed;
     yield* this.parsed.fileNames.map(path => new EsFile({ path, options, config: this.parsed }));
+    if (options.declaration) {
+      yield* this.parsed.fileNames.map(path => new TsFile({ path, options, config: this.parsed }));
+    }
   }
 
-  async *map(): AsyncIterableIterator<EsImport | EsExport> {
+  async *map(): AsyncIterableIterator<EsImport | EsExport | TsImport | TsExport> {
     for await (const file of this.files()) {
       yield* file.map(this.parsed.options);
     }
