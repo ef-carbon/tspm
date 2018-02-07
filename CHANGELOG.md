@@ -1,3 +1,12 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/ef-carbon/tspm/compare/v2.0.0...v2.0.1) (2018-02-07)
+
+
+### Bug Fixes
+
+* **declaration:** improve TypeError message ([a7f96fc](https://github.com/ef-carbon/tspm/commit/a7f96fc))
+* **ts:** filter exports without a `moduleSpecifier` ([5de60e8](https://github.com/ef-carbon/tspm/commit/5de60e8))
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/ef-carbon/tspm/compare/v1.2.0...v2.0.0) (2018-02-07)
 
