@@ -1,12 +1,14 @@
+import { existsSync as fileExistsSync, readFileSync as fileReadSync } from 'fs';
+import { dirname, resolve } from 'path';
+import * as ts from 'typescript';
+
+import UnsupportedError from '@error/Unsupported';
 import EsExport from '@es/Export';
 import EsFile from '@es/File';
 import EsImport from '@es/Import';
 import TsExport from '@ts/Export';
 import TsFile from '@ts/File';
 import TsImport from '@ts/Import';
-import { existsSync as fileExistsSync, readFileSync as fileReadSync } from 'fs';
-import { dirname, resolve } from 'path';
-import * as ts from 'typescript';
 
 export interface IOptions {
   tsconfig: string;
@@ -47,6 +49,9 @@ export default class Mapper {
       }));
     }
 
+    if (parsed.options.module !== ts.ModuleKind.ES2015) {
+      throw new UnsupportedError('Only ECMA2015 module outputs are supported at the moment');
+    }
     parsed.options.rootDir = parsed.options.rootDir || projectRoot;
     this.parsed = parsed;
   }
