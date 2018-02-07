@@ -21,6 +21,7 @@
     "paths": {
       "@lib/*": ["lib/*"],
       "@es/*": ["lib/es/*"],
+      "@ts/*": ["lib/ts/*"],
       "@error/*": ["lib/error/*"]
     },
     "newLine": "LF",
