@@ -1,24 +1,29 @@
-import * as acorn from 'acorn';
-import * as escodegen from 'escodegen';
-// tslint:disable-next-line:no-implicit-dependencies
-import * as estree from 'estree';
-import * as fs from 'fs';
-import * as ts from 'typescript';
-import { promisify } from 'util';
+import { existsSync as fileExistsSync, PathLike } from 'fs';
+import { CompilerOptions as ICompilerOptions, ParsedCommandLine as ICompilerConfig } from 'typescript';
 
-import ParseError from '@lib/error/Parse';
-import Export from '@lib/Export';
-import Import from '@lib/Import';
+import FileNotFoundError from '@error/FileNotFound';
+import { Declaration } from '@lib/convert';
 import Path from '@lib/Path';
 
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
-
-export interface IOptions {
+export interface IOptionsPath {
   path: string | Path;
-  options: ts.CompilerOptions;
-  config: ts.ParsedCommandLine;
 }
+
+export interface IOptionsOptions {
+  options: ICompilerOptions;
+}
+
+export interface IOptionsConfig {
+  config: ICompilerConfig;
+}
+
+export interface IOptionsExtension {
+  extension: string;
+}
+
+export type IDerivedOptions = IOptionsPath & IOptionsOptions & IOptionsConfig;
+
+export type IOptions = IDerivedOptions & IOptionsExtension;
 
 function commonPathPrefix(paths: IterableIterator<string>): string {
   const { done, value: left } = paths.next();
@@ -37,16 +42,20 @@ function commonPathPrefix(paths: IterableIterator<string>): string {
   return left.substring(0, index);
 }
 
-export default class File {
+export default abstract class File<I extends Declaration, E extends Declaration> {
   readonly source: Path;
-  readonly root: Path;
-  readonly options: ts.CompilerOptions;
-  private program: estree.Program | undefined;
+  protected readonly root: Path;
+  protected readonly options: ICompilerOptions;
+  protected readonly extension: string;
 
-  constructor({ path, options, config: { fileNames } }: IOptions) {
+  constructor({ path, options, config: { fileNames }, extension }: IOptions) {
     this.source = new Path(path.toString());
     this.root = new Path(commonPathPrefix(fileNames[Symbol.iterator]()));
     this.options = options;
+    this.extension = extension;
+    if (!fileExistsSync(this.destination.toString())) {
+      throw new FileNotFoundError({path: this.destination});
+    }
   }
 
   get isMapped(): Promise<boolean> {
@@ -62,56 +71,9 @@ export default class File {
     })();
   }
 
-  get ast(): Promise<estree.Program> {
-    if (this.program) {
-      return Promise.resolve(this.program);
-    } else {
-      return (async () => {
-        const data = await readFile(this.destination.toString(), 'utf-8');
-        try {
-            const comments: Array<acorn.Comment> = [];
-            const tokens: Array<acorn.Token> = [];
-            const program = acorn.parse(data, {
-              allowHashBang: true,
-              ranges: true,
-              onComment: comments,
-              onToken: tokens,
-              sourceType: 'module',
-              ecmaVersion: 8,
-            });
-            escodegen.attachComments(program, comments, tokens);
-            return this.program = program;
-        } catch (error) {
-          if (error instanceof SyntaxError) {
-            throw new ParseError({file: this, error, data});
-          } else {
-            throw error;
-          }
-        }
-      })();
-    }
-  }
+  abstract imports(): AsyncIterableIterator<I>;
 
-  async *imports(): AsyncIterableIterator<Import> {
-    const { body } = await this.ast;
-    yield* body
-      .filter(({type}) => type === 'ImportDeclaration')
-      .map(n => new Import({file: this, declaration: n as estree.ImportDeclaration}));
-  }
-
-  async *exports(): AsyncIterableIterator<Export> {
-    const { body } = await this.ast;
-    yield* body
-      .filter(n =>
-        n.type === 'ExportAllDeclaration' ||
-        (n.type === 'ExportNamedDeclaration' && (n).source !== null))
-      .map(n => new Export({
-        file: this,
-        declaration: n.type === 'ExportAllDeclaration' ?
-          n :
-          n as estree.ExportNamedDeclaration,
-      }));
-  }
+  abstract exports(): AsyncIterableIterator<E>;
 
   get destination(): Path {
     const { outDir } = this.options;
@@ -122,21 +84,17 @@ export default class File {
 
     const out = new Path(outDir);
     const destination = out.join(this.source.relative(this.root));
-    destination.extension = '.js';
+    destination.extension = this.extension;
     return destination;
   }
 
-  async write(path?: fs.PathLike | number, options?: {
+  abstract write(path?: PathLike | number, options?: {
     encoding?: string | null;
     mode?: number | string;
     flag?: string;
-  } | string | null): Promise<void> {
-    const ast = await this.ast;
-    const data = escodegen.generate(ast, {comment: true});
-    return writeFile((path === undefined) ? this.destination.toString() : path, data, options);
-  }
+  } | string | null): Promise<void>;
 
-  async *map(options: ts.CompilerOptions): AsyncIterableIterator<Import | Export> {
+  async *map(options: ICompilerOptions): AsyncIterableIterator<I | E> {
     for await (const imprt of this.imports()) {
       const mapped = await imprt.map(options);
       if (mapped) {

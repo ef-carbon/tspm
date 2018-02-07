@@ -118,7 +118,9 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^@test(.*)$": "<rootDir>/test$1",
-      "^@lib(.*)$": "<rootDir>/lib$1"
+      "^@lib(.*)$": "<rootDir>/lib$1",
+      "^@error(.*)$": "<rootDir>/lib/error$1",
+      "^@es(.*)$": "<rootDir>/lib/es$1"
     }
   }
 }

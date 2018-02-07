@@ -2,10 +2,9 @@ import * as fs from 'fs';
 import * as process from 'process';
 import * as yargs from 'yargs';
 
-import convert from '@lib/convert';
+import convert, { File } from '@lib/convert';
 import TspmError from '@lib/Error';
 import ParseError from '@lib/error/Parse';
-import File from '@lib/File';
 
 interface IColours {
   [name: string]: string;

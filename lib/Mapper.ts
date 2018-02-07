@@ -1,7 +1,7 @@
-import Export from '@lib/Export';
-import File from '@lib/File';
-import Import from '@lib/Import';
-import * as fs from 'fs';
+import EsExport from '@es/Export';
+import EsFile from '@es/File';
+import EsImport from '@es/Import';
+import { existsSync as fileExistsSync, readFileSync as fileReadSync } from 'fs';
 import { dirname, resolve } from 'path';
 import * as ts from 'typescript';
 
@@ -14,7 +14,7 @@ export default class Mapper {
   private readonly parsed: ts.ParsedCommandLine;
 
   constructor({ tsconfig, projectRoot }: IOptions) {
-    const config = ts.readConfigFile(tsconfig, path => fs.readFileSync(path, 'utf-8'));
+    const config = ts.readConfigFile(tsconfig, path => fileReadSync(path, 'utf-8'));
     if (config.error) {
       throw new TypeError(ts.formatDiagnostics([config.error], {
         getCanonicalFileName: f => f,
@@ -24,9 +24,9 @@ export default class Mapper {
     }
 
     const parseConfig: ts.ParseConfigHost = {
-      fileExists: fs.existsSync,
+      fileExists: fileExistsSync,
       readDirectory: ts.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf8'),
+      readFile: f => fileReadSync(f, 'utf8'),
       useCaseSensitiveFileNames: true,
     };
 
@@ -48,12 +48,12 @@ export default class Mapper {
     this.parsed = parsed;
   }
 
-  async *files(): AsyncIterableIterator<File> {
+  async *files(): AsyncIterableIterator<EsFile> {
     const { options } = this.parsed;
-    yield* this.parsed.fileNames.map(path => new File({ path, options, config: this.parsed }));
+    yield* this.parsed.fileNames.map(path => new EsFile({ path, options, config: this.parsed }));
   }
 
-  async *map(): AsyncIterableIterator<Import | Export> {
+  async *map(): AsyncIterableIterator<EsImport | EsExport> {
     for await (const file of this.files()) {
       yield* file.map(this.parsed.options);
     }
