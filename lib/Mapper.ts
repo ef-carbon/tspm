@@ -26,7 +26,7 @@ export default class Mapper {
       }));
     }
 
-    const parseConfig: ts.ParseConfigHost = {
+    const host: ts.ParseConfigHost = {
       fileExists: fileExistsSync,
       readDirectory: ts.sys.readDirectory,
       readFile: f => fileReadSync(f, 'utf8'),
@@ -35,7 +35,7 @@ export default class Mapper {
 
     const root = resolve(projectRoot || dirname(tsconfig));
 
-    const parsed = ts.parseJsonConfigFileContent(config.config, parseConfig, root, {noEmit: true});
+    const parsed = ts.parseJsonConfigFileContent(config.config, host, root, {noEmit: true});
 
     // ignore warnings and 'TS18003: No inputs were found in config file ...'
     const errors = parsed.errors.filter(d => d.category === ts.DiagnosticCategory.Error && d.code !== 18003);
