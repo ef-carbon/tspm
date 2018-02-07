@@ -7,17 +7,17 @@ export type Interface = (ExportAllDeclaration | ExportNamedDeclaration) | Import
 export type IOptions<T extends Interface> = IBaseOptions<T>;
 
 export default class Declaration<T extends Interface> extends Base<T> {
-  constructor({ declaration, ...rest}: IOptions<T>) {
+  constructor({ declaration, file, ...rest}: IOptions<T>) {
     // RAII checks
     const { type, value } = (declaration.source as SimpleLiteral);
     if (type !== 'Literal') {
-      throw new TypeError(`Invalid ES declaration source type: ${type}`);
+      throw new TypeError(`Invalid ES declaration source type '${type}' in '${file.source}'`);
     }
     if (typeof value !== 'string') {
-      throw new TypeError(`The type of the ES source value was not a 'string': ${typeof value}`);
+      throw new TypeError(`The type '${typeof value}' of the ES source value was not a 'string' for '${file.source}'`);
     }
 
-    super({declaration, ...rest, path: value});
+    super({declaration, file, ...rest, path: value});
   }
 
   private get literal(): SimpleLiteral {
