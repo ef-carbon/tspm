@@ -59,6 +59,7 @@ export default class File extends Base<Import, Export> {
     const { statements } = await this.ast;
     yield* statements
       .filter(({kind}) => kind === SyntaxKind.ExportDeclaration)
+      .filter(n => (n as ExportDeclaration).moduleSpecifier)
       .map(n => new Export({file: this, declaration: n as ExportDeclaration}));
   }
 
