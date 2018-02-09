@@ -2,5 +2,6 @@
   "extends": "../tsconfig",
   "compilerOptions": {
     "module": "CommonJS",
+    "removeComments": false,
   }
 }
