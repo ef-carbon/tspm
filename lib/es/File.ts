@@ -1,5 +1,3 @@
-import { Comment, parse, Token } from 'acorn';
-import { attachComments, generate } from 'escodegen';
 import { ExportNamedDeclaration, ImportDeclaration, Program } from 'estree';
 import { PathLike, readFile as readFileSync, writeFile as writeFileSync } from 'fs';
 import { promisify } from 'util';
@@ -7,6 +5,7 @@ import { promisify } from 'util';
 import ParseError from '@error/Parse';
 import Export from '@es/Export';
 import Import from '@es/Import';
+import { attachComments, Comment, generate, parse, plugins, Token } from '@es/parser';
 import Base, { IDerivedOptions as IBaseOptions } from '@lib/File';
 
 const readFile = promisify(readFileSync);
@@ -38,6 +37,7 @@ export default class File extends Base<Import, Export> {
               onToken: tokens,
               sourceType: 'module',
               ecmaVersion: 8,
+              plugins,
             });
             attachComments(program, comments, tokens);
             return this.program = program;
