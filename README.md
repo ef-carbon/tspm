@@ -33,7 +33,7 @@
 ```
 
 ```
-yarn add @ef-carbon/tspm
+yarn add -D @ef-carbon/tspm
 ```
 
 `package.json`
@@ -46,6 +46,14 @@ yarn add @ef-carbon/tspm
 ```
 
 `@lib` will be updated to the correct relative import in the JavaScript files
+
+### JSX
+
+To process projects that use JSX, install the optional ES parsing and generation modules:
+
+```
+yarn add -D acorn-jsx escodegen-wallaby estraverse-fb
+```
 
 ### Library
 
