@@ -1,3 +1,11 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/ef-carbon/tspm/compare/v2.0.2...v2.1.0) (2018-02-13)
+
+
+### Features
+
+* **es:** add JSX parsing support ([1410802](https://github.com/ef-carbon/tspm/commit/1410802))
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/ef-carbon/tspm/compare/v2.0.1...v2.0.2) (2018-02-07)
 
