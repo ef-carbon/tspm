@@ -143,7 +143,7 @@ There are various scripts available that provide the workflow steps for the proj
 
 [greenkeeper]: https://greenkeeper.io/
 [greenkeeper-badge]: https://badges.greenkeeper.io/ef-carbon/tspm.svg
-[docs]: docs/README.md
+[docs]: https://ef-carbon.github.io/tspm/
 [yarn]: https://yarnpkg.com
 [npm]: https://www.npmjs.com/package/@ef-carbon/tspm
 [codecov]: https://codecov.io/gh/ef-carbon/tspm
