@@ -42,6 +42,17 @@ version: 2
     command: |
       echo "PATH=${PATH}:$(yarn global bin)" >> "${BASH_ENV}"
 
+.setup-git: &setup_git
+  run:
+    name: Setting git Environment
+    command: |
+      echo "GH_USER=$(curl -H "Authorization: bearer ${GH_TOKEN}" -d '{ "query": "query { viewer { login } }" }' https://api.github.com/graphql | jq -r .data.viewer.login)" >> "${BASH_ENV}"
+      source "${BASH_ENV}"
+      echo "GH_EMAIL=${GH_USER}@ef.com" >> "${BASH_ENV}"
+      source "${BASH_ENV}"
+      git config user.name "${GH_USER}"
+      git config user.email "${GH_EMAIL}"
+
 jobs:
   dependencies:
     <<: *working_directory
@@ -176,6 +187,24 @@ jobs:
           name: Release
           command: npx semantic-release
 
+  githubPages:
+    <<: *working_directory
+    <<: *docker
+    steps:
+      - checkout
+      - <<: *restore_cache
+      - run:
+          name: Documentation
+          command: yarn docs
+      - <<: *setup_git
+      - run:
+          name: Upload
+          command: |
+            git add --force dist/docs
+            git commit --message 'chore(docs): update documentation [skip ci]'
+            git subtree split --prefix dist/docs --branch gh-pages
+            git push --force origin gh-pages
+
 workflows:
   version: 2
   build:
@@ -203,6 +232,13 @@ workflows:
           requires:
             - test
       - release:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - githubPages:
           requires:
             - test
           filters:
