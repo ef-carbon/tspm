@@ -4090,9 +4090,9 @@ rollup-plugin-typescript-path-mapping@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-typescript-path-mapping/-/rollup-plugin-typescript-path-mapping-1.0.2.tgz#e4675930866cb9d45a491421b1d546817f9e3921"
 
-rollup@^0.55.5:
-  version "0.55.5"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.55.5.tgz#2f88c300f7cf24b5ec2dca8a6aba73b04e087e93"
+rollup@^0.56.0:
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.56.0.tgz#4aefe9cef84a01ac3245e3fbba155e38dc2cc2e8"
 
 run-async@^2.2.0:
   version "2.3.0"
