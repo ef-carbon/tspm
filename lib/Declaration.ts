@@ -61,7 +61,7 @@ function isBuiltinModule(module: string): boolean {
     'util',
     'v8',
     'vm',
-    'zlib',
+    'zlib'
   ];
   return builtin.indexOf(module) !== -1;
 }
@@ -102,7 +102,7 @@ export default abstract class Declaration<T extends Interface> {
     // TODO: add a global cache here
     const { resolvedModule: resolved } = ts.nodeModuleNameResolver(this.path, this.file.source.toString(), options, {
       fileExists: fs.existsSync,
-      readFile: (f: string) => fs.readFileSync(f, 'utf8'),
+      readFile: (f: string) => fs.readFileSync(f, 'utf8')
     });
 
     this.processed = true;

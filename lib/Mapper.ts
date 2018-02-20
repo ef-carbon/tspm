@@ -24,7 +24,7 @@ export default class Mapper {
       throw new TypeError(ts.formatDiagnostics([config.error], {
         getCanonicalFileName: f => f,
         getCurrentDirectory: process.cwd,
-        getNewLine: () => '\n',
+        getNewLine: () => '\n'
       }));
     }
 
@@ -32,7 +32,7 @@ export default class Mapper {
       fileExists: fileExistsSync,
       readDirectory: ts.sys.readDirectory,
       readFile: f => fileReadSync(f, 'utf8'),
-      useCaseSensitiveFileNames: true,
+      useCaseSensitiveFileNames: true
     };
 
     const root = resolve(projectRoot || dirname(tsconfig));
@@ -45,7 +45,7 @@ export default class Mapper {
       throw new TypeError(ts.formatDiagnostics(errors, {
         getCanonicalFileName: f => f,
         getCurrentDirectory: process.cwd,
-        getNewLine: () => '\n',
+        getNewLine: () => '\n'
       }));
     }
 

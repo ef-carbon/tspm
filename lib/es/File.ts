@@ -37,7 +37,7 @@ export default class File extends Base<Import, Export> {
               onToken: tokens,
               sourceType: 'module',
               ecmaVersion: 8,
-              plugins,
+              plugins
             });
             attachComments(program, comments, tokens);
             return this.program = program;
@@ -69,7 +69,7 @@ export default class File extends Base<Import, Export> {
         file: this,
         declaration: n.type === 'ExportAllDeclaration' ?
           n :
-          n as ExportNamedDeclaration,
+          n as ExportNamedDeclaration
       }));
   }
 
