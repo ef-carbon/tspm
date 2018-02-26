@@ -20,7 +20,7 @@
 ## Usage
 
 `tsconfig.json`
-```
+```json
 {
   "compilerOptions": {
     "outDir": "dist",
@@ -37,7 +37,7 @@ yarn add -D @ef-carbon/tspm
 ```
 
 `package.json`
-```
+```json
 {
   "scripts": {
     "postbuild": "ef-tspm"
@@ -57,7 +57,7 @@ yarn add -D acorn-jsx escodegen-wallaby estraverse-fb
 
 ### Library
 
-```
+```typescript
 import convert, { IOptions, File } from '@ef-carbon/tspm'
 
 const options: IOptions = {
