@@ -135,11 +135,12 @@
     lodash "^4.17.4"
     url-template "^2.0.8"
 
-"@semantic-release/changelog@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-1.0.1.tgz#4faefdb78fccf113eaf122dd68f7e287048bc68e"
+"@semantic-release/changelog@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-2.0.0.tgz#422758472746d35a15e09b109d040ebaf8565af4"
   dependencies:
     "@semantic-release/error" "^2.1.0"
+    aggregate-error "^1.0.0"
     fs-extra "^5.0.0"
     lodash "^4.17.4"
 
@@ -157,11 +158,12 @@
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@semantic-release/error/-/error-2.2.0.tgz#ee9d5a09c9969eade1ec864776aeda5c5cddbbf0"
 
-"@semantic-release/git@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@semantic-release/git/-/git-3.0.1.tgz#65a2cd7c8bdac74b91de2bd368957cf55033871f"
+"@semantic-release/git@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/git/-/git-4.0.0.tgz#c0ad37bbbffd150eda0251cedacdc7e21e8aa889"
   dependencies:
     "@semantic-release/error" "^2.1.0"
+    aggregate-error "^1.0.0"
     debug "^3.1.0"
     dir-glob "^2.0.0"
     execa "^0.9.0"
@@ -187,9 +189,9 @@
     parse-github-url "^1.0.1"
     url-join "^4.0.0"
 
-"@semantic-release/npm@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-3.1.0.tgz#bc6a6a9ffd5f1e3604875aeb15a5599e335a7e29"
+"@semantic-release/npm@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-3.2.0.tgz#0f81b722c315d91653eac272932948394056596e"
   dependencies:
     "@semantic-release/error" "^2.2.0"
     aggregate-error "^1.0.0"
@@ -4134,14 +4136,14 @@ secure-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/secure-keys/-/secure-keys-1.0.0.tgz#f0c82d98a3b139a8776a8808050b824431087fca"
 
-semantic-release@^13.4.0:
-  version "13.4.0"
-  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-13.4.0.tgz#593b0b9f7bf0561be8cfc6acb9fbc839639d0a4e"
+semantic-release@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-15.0.0.tgz#d54b7584f4e11f75513349096fc08a96e83f8825"
   dependencies:
     "@semantic-release/commit-analyzer" "^5.0.0"
     "@semantic-release/error" "^2.2.0"
     "@semantic-release/github" "^4.1.0"
-    "@semantic-release/npm" "^3.1.0"
+    "@semantic-release/npm" "^3.2.0"
     "@semantic-release/release-notes-generator" "^6.0.0"
     aggregate-error "^1.0.0"
     chalk "^2.3.0"
