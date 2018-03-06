@@ -45,6 +45,7 @@
     "readme": "docs/README.md",
     "hideGenerator": true,
     "excludePrivate": true,
+    "excludeExternal": true,
     "logger": "none",
     "exclude": "**/*.test.ts"
   }
