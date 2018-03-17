@@ -5,25 +5,15 @@ import FileNotFoundError from '@error/FileNotFound';
 import { Declaration } from '@lib/convert';
 import Path from '@lib/Path';
 
-export interface IOptionsPath {
+export interface IDerivedOptions {
   path: string | Path;
-}
-
-export interface IOptionsOptions {
   options: ICompilerOptions;
-}
-
-export interface IOptionsConfig {
   config: ICompilerConfig;
 }
 
-export interface IOptionsExtension {
+export interface IOptions extends IDerivedOptions {
   extension: string;
 }
-
-export type IDerivedOptions = IOptionsPath & IOptionsOptions & IOptionsConfig;
-
-export type IOptions = IDerivedOptions & IOptionsExtension;
 
 function commonPathPrefix(paths: IterableIterator<string>): string {
   const { done, value: left } = paths.next();

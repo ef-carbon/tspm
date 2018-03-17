@@ -6,21 +6,14 @@ import ResolutionError from '@error/Resolution';
 import { DeclarationInterface as Interface, File } from '@lib/convert';
 import Path from '@lib/Path';
 
-export interface IOptionsDeclaration<T extends Interface> {
+export interface IDerivedOptions<T extends Interface> {
   declaration: T;
-}
-
-export interface IOptionsFile {
   file: File;
 }
 
-export interface IOptionsPath {
+export interface IOptions<T extends Interface> extends IDerivedOptions<T> {
   path: string;
 }
-
-export type IDerivedOptions<T extends Interface> = IOptionsDeclaration<T> & IOptionsFile;
-
-export type IOptions<T extends Interface> = IDerivedOptions<T> & IOptionsPath;
 
 function isBuiltinModule(module: string): boolean {
   // TODO: change to use 'is-builtin-module', need to submit @types/is-builtin-module

@@ -2,13 +2,10 @@ import { existsSync as fileExistsSync, readFileSync as fileReadSync } from 'fs';
 import { dirname, resolve } from 'path';
 import * as ts from 'typescript';
 
-import UnsupportedError from '@error/Unsupported';
-import EsExport from '@es/Export';
+import { Declaration, File } from '@lib/convert';
+
 import EsFile from '@es/File';
-import EsImport from '@es/Import';
-import TsExport from '@ts/Export';
 import TsFile from '@ts/File';
-import TsImport from '@ts/Import';
 
 export interface IOptions {
   tsconfig: string;
@@ -49,14 +46,11 @@ export default class Mapper {
       }));
     }
 
-    if (parsed.options.module !== ts.ModuleKind.ES2015) {
-      throw new UnsupportedError('Only ECMA2015 module outputs are supported at the moment');
-    }
     parsed.options.rootDir = parsed.options.rootDir || projectRoot;
     this.parsed = parsed;
   }
 
-  async *files(): AsyncIterableIterator<EsFile | TsFile> {
+  async *files(): AsyncIterableIterator<File> {
     const { options } = this.parsed;
     yield* this.parsed.fileNames.map(path => new EsFile({ path, options, config: this.parsed }));
     if (options.declaration) {
@@ -64,7 +58,7 @@ export default class Mapper {
     }
   }
 
-  async *map(): AsyncIterableIterator<EsImport | EsExport | TsImport | TsExport> {
+  async *map(): AsyncIterableIterator<Declaration> {
     for await (const file of this.files()) {
       yield* file.map(this.parsed.options);
     }

@@ -1,11 +1,17 @@
-import { ExportNamedDeclaration, ImportDeclaration, Program } from 'estree';
+import { Program } from 'estree';
 import { PathLike, readFile as readFileSync, writeFile as writeFileSync } from 'fs';
+import { ModuleKind } from 'typescript';
 import { promisify } from 'util';
 
 import ParseError from '@error/Parse';
 import Export from '@es/Export';
 import Import from '@es/Import';
+import isExportNamedDeclaration from '@es/isExportNamedDeclaration';
+import isImportDeclaration from '@es/isImportDeclaration';
+import isRequireCallExpression from '@es/isRequireCallExpression';
+import isVariableDeclaration from '@es/isVariableDeclaration';
 import { attachComments, Comment, generate, parse, plugins, Token } from '@es/parser';
+import Require from '@es/Require';
 import Base, { IDerivedOptions as IBaseOptions } from '@lib/File';
 
 const readFile = promisify(readFileSync);
@@ -13,7 +19,7 @@ const writeFile = promisify(writeFileSync);
 
 export type IOptions = IBaseOptions;
 
-export default class File extends Base<Import, Export> {
+export default class File extends Base<Import | Require, Export> {
   private program: Program | undefined;
 
   constructor({ ...options }: IOptions) {
@@ -35,7 +41,7 @@ export default class File extends Base<Import, Export> {
               ranges: true,
               onComment: comments,
               onToken: tokens,
-              sourceType: 'module',
+              sourceType: this.options.module === ModuleKind.ES2015 ? 'module' : 'script',
               ecmaVersion: 8,
               plugins
             });
@@ -52,25 +58,25 @@ export default class File extends Base<Import, Export> {
     }
   }
 
-  async *imports(): AsyncIterableIterator<Import> {
+  async *imports(): AsyncIterableIterator<Import | Require> {
     const { body } = await this.ast;
     yield* body
-      .filter(({type}) => type === 'ImportDeclaration')
-      .map(n => new Import({file: this, declaration: n as ImportDeclaration}));
+      .filter(isImportDeclaration)
+      .map(declaration => new Import({file: this, declaration}));
+    yield* body
+      .filter(isVariableDeclaration)
+      .map(({declarations}) => declarations)
+      .reduce((a, n) => a.concat(n), [])
+      .map(({init}) => init)
+      .filter(isRequireCallExpression)
+      .map(declaration => new Require({file: this, declaration}));
   }
 
   async *exports(): AsyncIterableIterator<Export> {
     const { body } = await this.ast;
     yield* body
-      .filter(n =>
-        n.type === 'ExportAllDeclaration' ||
-        (n.type === 'ExportNamedDeclaration' && (n).source !== null))
-      .map(n => new Export({
-        file: this,
-        declaration: n.type === 'ExportAllDeclaration' ?
-          n :
-          n as ExportNamedDeclaration
-      }));
+      .filter(isExportNamedDeclaration)
+      .map(declaration => new Export({ file: this, declaration }));
   }
 
   async write(path?: PathLike | number, options?: {
