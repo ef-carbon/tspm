@@ -1,3 +1,11 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/ef-carbon/tspm/compare/v2.1.0...v2.2.0) (2018-03-18)
+
+
+### Features
+
+* add support for rewriting `require` calls ([d1ea076](https://github.com/ef-carbon/tspm/commit/d1ea076))
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/ef-carbon/tspm/compare/v2.0.2...v2.1.0) (2018-02-13)
 
