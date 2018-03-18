@@ -40,4 +40,5 @@ export type Token = acorn.Token;
 export const parse = acorn.parse;
 export const generate = escodegen.generate;
 export const attachComments = estraverse.attachComments;
+export const traverse = estraverse.traverse;
 export { plugins };

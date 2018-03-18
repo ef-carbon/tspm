@@ -1,4 +1,4 @@
-import { Program } from 'estree';
+import { Node, Program } from 'estree';
 import { PathLike, readFile as readFileSync, writeFile as writeFileSync } from 'fs';
 import { ModuleKind } from 'typescript';
 import { promisify } from 'util';
@@ -9,8 +9,7 @@ import Import from '@es/Import';
 import isExportNamedDeclaration from '@es/isExportNamedDeclaration';
 import isImportDeclaration from '@es/isImportDeclaration';
 import isRequireCallExpression from '@es/isRequireCallExpression';
-import isVariableDeclaration from '@es/isVariableDeclaration';
-import { attachComments, Comment, generate, parse, plugins, Token } from '@es/parser';
+import { attachComments, Comment, generate, parse, plugins, Token, traverse } from '@es/parser';
 import Require from '@es/Require';
 import Base, { IDerivedOptions as IBaseOptions } from '@lib/File';
 
@@ -59,17 +58,21 @@ export default class File extends Base<Import | Require, Export> {
   }
 
   async *imports(): AsyncIterableIterator<Import | Require> {
-    const { body } = await this.ast;
-    yield* body
+    const ast = await this.ast;
+
+    yield* ast.body
       .filter(isImportDeclaration)
       .map(declaration => new Import({file: this, declaration}));
-    yield* body
-      .filter(isVariableDeclaration)
-      .map(({declarations}) => declarations)
-      .reduce((a, n) => a.concat(n), [])
-      .map(({init}) => init)
-      .filter(isRequireCallExpression)
-      .map(declaration => new Require({file: this, declaration}));
+
+    const requires: Array<Require> = [];
+    traverse(ast, {
+      enter: (declaration: Node) => {
+        if (isRequireCallExpression(declaration)) {
+          requires.push(new Require({file: this, declaration}));
+        }
+      }
+    });
+    yield* requires;
   }
 
   async *exports(): AsyncIterableIterator<Export> {
