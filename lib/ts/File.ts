@@ -7,7 +7,7 @@ import {
   ImportDeclaration,
   ScriptTarget,
   SourceFile,
-  SyntaxKind
+  SyntaxKind,
 } from 'typescript';
 import { promisify } from 'util';
 

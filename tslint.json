@@ -25,7 +25,7 @@
     "prefer-function-over-method": [true, "allow-public", "allow-protected"],
     "quotemark": [true, "single", "avoid-escape"],
     "strict-boolean-expressions": false,
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never", "esSpecCompliant": true}],
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never", "esSpecCompliant": true}],
     "typedef": [true, "call-signature", "parameter", "property-declaration", "member-variable-declaration"],
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"
     ]

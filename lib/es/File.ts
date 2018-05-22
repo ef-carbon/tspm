@@ -42,7 +42,7 @@ export default class File extends Base<Import | Require, Export> {
               onToken: tokens,
               sourceType: this.options.module === ModuleKind.ES2015 ? 'module' : 'script',
               ecmaVersion: 8,
-              plugins
+              plugins,
             });
             attachComments(program, comments, tokens);
             return this.program = program;
@@ -70,7 +70,7 @@ export default class File extends Base<Import | Require, Export> {
         if (isRequireCallExpression(declaration)) {
           requires.push(new Require({file: this, declaration}));
         }
-      }
+      },
     });
     yield* requires;
   }

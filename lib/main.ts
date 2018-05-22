@@ -16,7 +16,7 @@ const colourful: IColours = {
   green: '\x1b[32m',
   blue: '\x1b[34m',
   black: '\x1b[30m',
-  reset: '\x1b[0m'
+  reset: '\x1b[0m',
 };
 
 const colourLess = Object.keys(colourful).reduce<IColours>((o, k) => {o[k] = ''; return o; }, {});
@@ -38,27 +38,27 @@ export async function parseArguments(args: ReadonlyArray<string>): Promise<IOpti
     .option('verbose', {
       alias: 'v',
       default: false,
-      description: 'Logs more information to the console'
+      description: 'Logs more information to the console',
     })
     .option('silent', {
       alias: 's',
       default: false,
-      description: 'Logs no information but errors to the console'
+      description: 'Logs no information but errors to the console',
     })
     .option('tsconfig', {
       alias: 'c',
       default: `${process.cwd()}/tsconfig.json`,
-      description: 'Determines the TypeScript configuration to read'
+      description: 'Determines the TypeScript configuration to read',
     })
     .option('projectRoot', {
       alias: 'r',
       default: process.cwd(),
-      description: 'The location of the TypeScript project root'
+      description: 'The location of the TypeScript project root',
     })
     .option('colour', {
       choices: ['yes', 'auto', 'no'],
       default: 'auto',
-      description: 'Enables colour in the console output'
+      description: 'Enables colour in the console output',
     })
     .example('$0 -c ./tsconfig.json', 'Performs mapping of the files specified in the TypeScript configuration')
     .epilogue('Performs mapping of the TypeScript module lookups to the correct paths. The executable uses the ' +
@@ -72,7 +72,7 @@ export async function parseArguments(args: ReadonlyArray<string>): Promise<IOpti
     projectRoot,
     colour: (colour === 'yes') ? true : (colour === 'no') ? false : colour,
     verbose,
-    silent
+    silent,
   };
   return options;
 }
