@@ -196,6 +196,9 @@ jobs:
       - run:
           name: Documentation
           command: yarn docs
+      - run:
+          name: Jekyll Suppression
+          command: touch dist/docs/.nojekyll
       - <<: *setup_git
       - run:
           name: Upload
