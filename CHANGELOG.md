@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/ef-carbon/tspm/compare/v2.2.1...v2.2.2) (2018-06-13)
+
+
+### Bug Fixes
+
+* **package:** update winston to version 3.0.0 ([622a3a8](https://github.com/ef-carbon/tspm/commit/622a3a8))
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/ef-carbon/tspm/compare/v2.2.0...v2.2.1) (2018-03-18)
 
