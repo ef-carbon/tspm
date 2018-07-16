@@ -1,3 +1,10 @@
-import ExtendableError from 'extendable-error';
+export interface IOptions { }
 
-export default abstract class TspmError extends ExtendableError {}
+export abstract class TspmError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TspmError';
+  }
+}
+
+export default TspmError;

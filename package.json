@@ -59,7 +59,6 @@
     "core-js": "^2.5.7",
     "escodegen": "^1.10.0",
     "estraverse": "^4.2.0",
-    "extendable-error": "^0.1.5",
     "winston": "^3.0.0",
     "yargs": "^11.0.0"
   },
