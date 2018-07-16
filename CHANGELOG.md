@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/ef-carbon/tspm/compare/v2.2.2...v2.2.3) (2018-07-16)
+
+
+### Bug Fixes
+
+* remove `extendable-error` dependency ([6e9c0a1](https://github.com/ef-carbon/tspm/commit/6e9c0a1))
+
 ## [2.2.2](https://github.com/ef-carbon/tspm/compare/v2.2.1...v2.2.2) (2018-06-13)
 
 
