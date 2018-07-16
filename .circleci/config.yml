@@ -235,6 +235,7 @@ workflows:
           requires:
             - test
       - release:
+          context: release
           requires:
             - test
           filters:
