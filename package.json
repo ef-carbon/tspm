@@ -90,7 +90,7 @@
     "jest": "^23.1.0",
     "jest-junit-reporter": "^1.1.0",
     "opn-cli": "^3.1.0",
-    "rollup": "^0.61.0",
+    "rollup": "^0.63.2",
     "rollup-plugin-typescript-path-mapping": "^1.0.2",
     "semantic-release": "^15.5.2",
     "ts-jest": "^22.4.6",
