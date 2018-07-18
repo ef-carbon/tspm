@@ -4869,9 +4869,9 @@ rollup-plugin-typescript-path-mapping@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-typescript-path-mapping/-/rollup-plugin-typescript-path-mapping-1.0.2.tgz#e4675930866cb9d45a491421b1d546817f9e3921"
 
-rollup@^0.61.0:
-  version "0.61.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.61.0.tgz#9340ce15f6fc4b0cab4b2512ee9e948cd153e737"
+rollup@^0.63.2:
+  version "0.63.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.63.2.tgz#d27619204cd025c948d740972fb1d0da6aa64481"
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
