@@ -5,6 +5,7 @@
     "arrow-parens": [true, "ban-single-arg-parens"],
     "comment-format": false,
     "completed-docs": false,
+    "file-name-casing": false,
     "indent": [true, "spaces", 2],
     "match-default-export-name": false,
     "max-classes-per-file": false,

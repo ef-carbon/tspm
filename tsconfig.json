@@ -46,6 +46,7 @@
     "excludePrivate": true,
     "excludeExternal": true,
     "logger": "none",
-    "exclude": "**/*.test.ts"
+    "exclude": "**/*.test.ts",
+    "ignoreCompilerErrors": true
   }
 }
