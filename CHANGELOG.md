@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/ef-carbon/tspm/compare/v2.2.3...v2.2.4) (2018-08-01)
+
+
+### Bug Fixes
+
+* **package:** accept TS ^3 as a peer ([d5ef08c](https://github.com/ef-carbon/tspm/commit/d5ef08c))
+
 ## [2.2.3](https://github.com/ef-carbon/tspm/compare/v2.2.2...v2.2.3) (2018-07-16)
 
 
