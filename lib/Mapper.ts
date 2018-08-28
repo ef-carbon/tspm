@@ -52,7 +52,9 @@ export default class Mapper {
 
   async *files(): AsyncIterableIterator<File> {
     const { options } = this.parsed;
-    yield* this.parsed.fileNames.map(path => new EsFile({ path, options, config: this.parsed }));
+    yield* this.parsed.fileNames
+      .filter(path => options.declaration || !path.endsWith('.d.ts'))
+      .map(path => new EsFile({ path, options, config: this.parsed }));
     if (options.declaration) {
       yield* this.parsed.fileNames.map(path => new TsFile({ path, options, config: this.parsed }));
     }
