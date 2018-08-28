@@ -1,3 +1,11 @@
+## [2.2.5](https://github.com/ef-carbon/tspm/compare/v2.2.4...v2.2.5) (2018-08-28)
+
+
+### Bug Fixes
+
+* add filtering for typescript definition files ([75d57af](https://github.com/ef-carbon/tspm/commit/75d57af))
+* always filter out definition files ([dd0f4f1](https://github.com/ef-carbon/tspm/commit/dd0f4f1))
+
 ## [2.2.4](https://github.com/ef-carbon/tspm/compare/v2.2.3...v2.2.4) (2018-08-01)
 
 
