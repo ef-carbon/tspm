@@ -463,9 +463,10 @@
   dependencies:
     winston "*"
 
-"@types/yargs@^11.1.1":
-  version "11.1.1"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-11.1.1.tgz#2e724257167fd6b615dbe4e54301e65fe597433f"
+"@types/yargs@^12.0.3":
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-12.0.3.tgz#9a9fbaf6a81c9ebf5c283386162d1118274c6827"
+  integrity sha512-/3AwpLvieyVFADvpP5MHkBOhHJ7pJYZFUex5noLEn/jSQT1pZInHdB7JproJz0E65ystrap36GMKiatijI8K5g==
 
 JSONStream@^1.0.4:
   version "1.3.3"
