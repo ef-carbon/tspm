@@ -73,7 +73,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@commitlint/cli": "^7.0.0",
-    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/config-conventional": "^7.3.1",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.3",
     "@types/acorn": "^4.0.3",
