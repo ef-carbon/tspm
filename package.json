@@ -55,7 +55,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "acorn": "^5.7.2",
+    "acorn": "^6.1.1",
     "core-js": "^2.5.7",
     "escodegen": "^1.11.0",
     "estraverse": "^4.2.0",
